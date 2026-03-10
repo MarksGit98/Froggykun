@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/data/enemy_definition.gd" id="1_enemy_definition"]
+
+[resource]
+script = ExtResource("1_enemy_definition")
+display_name = "Grunt"
+max_health = 4.0
+contact_damage = 1.0
+move_speed = 72.0
+acceleration = 550.0
+friction = 760.0
+gravity = 980.0
+attack_type = 1
+aggro_range = 210.0
+attack_range = 22.0
+attack_cooldown_seconds = 0.85
+leash_range = 420.0
+xp_drop = 3
+optional_item_drop_chance = 0.12

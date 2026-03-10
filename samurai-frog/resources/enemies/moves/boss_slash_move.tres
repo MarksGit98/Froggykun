@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BossMove" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/data/boss_move.gd" id="1_boss_move"]
+
+[resource]
+script = ExtResource("1_boss_move")
+move_id = &"slash_combo"
+attack_type = 1
+cooldown_seconds = 0.9
+weight = 1.0
+animation_name = &"attack_1"

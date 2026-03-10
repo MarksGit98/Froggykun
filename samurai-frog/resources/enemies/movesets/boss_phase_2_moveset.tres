@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BossMoveSet" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/data/boss_move_set.gd" id="1_boss_move_set"]
+[ext_resource type="Resource" path="res://resources/enemies/moves/boss_ground_slam_move.tres" id="2_move"]
+[ext_resource type="Resource" path="res://resources/enemies/moves/boss_dash_strike_move.tres" id="3_move"]
+
+[resource]
+script = ExtResource("1_boss_move_set")
+set_id = &"phase_2"
+moves = [ExtResource("2_move"), ExtResource("3_move")]

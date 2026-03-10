@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/data/enemy_definition.gd" id="1_enemy_definition"]
+
+[resource]
+script = ExtResource("1_enemy_definition")
+display_name = "Goblin"
+max_health = 6.0
+contact_damage = 1.0
+move_speed = 88.0
+acceleration = 620.0
+friction = 780.0
+gravity = 980.0
+attack_type = 1
+aggro_range = 260.0
+attack_range = 28.0
+attack_cooldown_seconds = 0.9
+leash_range = 500.0
+xp_drop = 5
+optional_item_drop_chance = 0.15

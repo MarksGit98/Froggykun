@@ -1,0 +1,565 @@
+[gd_scene format=3 uid="uid://d0h1lnpnj5rjk"]
+
+[ext_resource type="Script" uid="uid://bmdqoq277gw5g" path="res://scripts/enemies/goblin_enemy.gd" id="1_goblin_script"]
+[ext_resource type="Texture2D" uid="uid://da7c1ddkq30m1" path="res://assets/sprites/enemies/Goblin/Idle.png" id="2_goblin_idle"]
+[ext_resource type="Texture2D" uid="uid://b6lrd4tc2du6i" path="res://assets/sprites/enemies/Goblin/Run.png" id="3_goblin_run"]
+[ext_resource type="Texture2D" uid="uid://ctcdnhg2l2yqf" path="res://assets/sprites/enemies/Goblin/Attack.png" id="4_goblin_attack"]
+[ext_resource type="Texture2D" uid="uid://f2eiguhxn0ih" path="res://assets/sprites/enemies/Goblin/Death.png" id="5_goblin_death"]
+[ext_resource type="Texture2D" uid="uid://wpw3isk1oc7h" path="res://assets/sprites/enemies/Goblin/Take Hit.png" id="6_goblin_take_hit"]
+[ext_resource type="Script" uid="uid://y1c0o4u8idig" path="res://scripts/enemies/enemy_state_machine.gd" id="7_enemy_state_machine"]
+[ext_resource type="Script" uid="uid://b5ks5277f8xpd" path="res://scripts/enemies/enemy_patrol_state.gd" id="8_enemy_patrol_state"]
+[ext_resource type="Script" uid="uid://1smsyikx1hfk" path="res://scripts/enemies/enemy_combat_state.gd" id="9_enemy_combat_state"]
+[ext_resource type="Script" uid="uid://blqwk4y3p1sq4" path="res://scripts/enemies/enemy_death_state.gd" id="10_enemy_death_state"]
+[ext_resource type="Script" uid="uid://chkkfnqixswsp" path="res://scripts/enemies/enemy_state_debug_label.gd" id="11_k63hy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(16, 32)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pqy2e"]
+height = 32.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_attack_left"]
+size = Vector2(32, 44)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_attack_right"]
+size = Vector2(16, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_attack_above"]
+size = Vector2(18, 10)
+
+[sub_resource type="Animation" id="Animation_attack"]
+resource_name = "Attack"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_goblin_attack")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:hframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [8]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Attack/AttackHitBoxRight:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.295, 0.35656887),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Attack/AttackHitBoxRight:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(36, -8)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Attack/AttackHitBoxRight:shape:size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(50, 28)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Attack/AttackHitBoxLeft:disabled")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.295, 0.39),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Attack/AttackHitBoxLeft:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
+[sub_resource type="Animation" id="Animation_death"]
+resource_name = "Death"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_goblin_death")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:hframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HurtBox/HurtBoxShape:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_idle"]
+resource_name = "Idle"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_goblin_idle")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:hframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+
+[sub_resource type="Animation" id="Animation_pqy2e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HurtBox/HurtBoxShape:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HurtBox/HurtBoxShape:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(17, -8)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Attack/AttackHitBoxRight:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Attack/AttackHitBoxRight:shape:size")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(16, 14)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Attack/AttackHitBoxRight:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(14, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Attack/AttackHitBoxLeft:disabled")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_run"]
+resource_name = "Run"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_goblin_run")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:hframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [8]
+}
+
+[sub_resource type="Animation" id="Animation_take_hit"]
+resource_name = "Take Hit"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_goblin_take_hit")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:hframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HurtBox/HurtBoxShape:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.05, 0.12),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("HurtBox/HurtBoxShape:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.12),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(11, -8)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_goblin"]
+_data = {
+&"Attack": SubResource("Animation_attack"),
+&"Death": SubResource("Animation_death"),
+&"Idle": SubResource("Animation_idle"),
+&"RESET": SubResource("Animation_pqy2e"),
+&"Run": SubResource("Animation_run"),
+&"Take Hit": SubResource("Animation_take_hit")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_attack"]
+animation = &"Attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_death"]
+animation = &"Death"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_idle"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_run_left"]
+animation = &"Run"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_run_right"]
+animation = &"Run"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_move"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_idle")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_run_left")
+blend_point_1/pos = -1.0
+blend_point_2/node = SubResource("AnimationNodeAnimation_run_right")
+blend_point_2/pos = 1.0
+blend_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_take_hit"]
+animation = &"Take Hit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="Transition_start"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="Transition_move_to_attack"]
+advance_mode = 2
+advance_condition = &"attack_requested"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="Transition_attack_to_move"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="Transition_move_to_take_hit"]
+advance_mode = 2
+advance_condition = &"take_hit_requested"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="Transition_take_hit_to_move"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="Transition_move_to_death"]
+advance_mode = 2
+advance_condition = &"death_requested"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="Transition_attack_to_death"]
+advance_mode = 2
+advance_condition = &"death_requested"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="Transition_take_hit_to_death"]
+advance_mode = 2
+advance_condition = &"death_requested"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_goblin"]
+states/Attack/node = SubResource("AnimationNodeAnimation_attack")
+states/Attack/position = Vector2(184, -8)
+states/Death/node = SubResource("AnimationNodeAnimation_death")
+states/Death/position = Vector2(414, 84)
+states/Move/node = SubResource("AnimationNodeBlendSpace1D_move")
+states/Move/position = Vector2(-40, 84)
+states/Start/position = Vector2(-234, 84)
+states/TakeHit/node = SubResource("AnimationNodeAnimation_take_hit")
+states/TakeHit/position = Vector2(184, 184)
+transitions = ["Start", "Move", SubResource("Transition_start"), "Move", "Attack", SubResource("Transition_move_to_attack"), "Attack", "Move", SubResource("Transition_attack_to_move"), "Move", "TakeHit", SubResource("Transition_move_to_take_hit"), "TakeHit", "Move", SubResource("Transition_take_hit_to_move"), "Move", "Death", SubResource("Transition_move_to_death"), "Attack", "Death", SubResource("Transition_attack_to_death"), "TakeHit", "Death", SubResource("Transition_take_hit_to_death")]
+graph_offset = Vector2(-580.3537, -112.2375)
+
+[node name="GoblinEnemy" type="CharacterBody2D" unique_id=628273889]
+collision_layer = 4
+script = ExtResource("1_goblin_script")
+
+[node name="EnemyHitBox" type="CollisionShape2D" parent="." unique_id=1823641000]
+position = Vector2(17, -17)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="HurtBox" type="Area2D" parent="." unique_id=915701551]
+position = Vector2(0, -8)
+collision_layer = 32
+collision_mask = 0
+monitoring = false
+
+[node name="HurtBoxShape" type="CollisionShape2D" parent="HurtBox" unique_id=825512697]
+position = Vector2(17, -8)
+shape = SubResource("CapsuleShape2D_pqy2e")
+
+[node name="Attack" type="Area2D" parent="." unique_id=1430850098]
+position = Vector2(0, -8)
+collision_layer = 128
+collision_mask = 16
+monitoring = false
+monitorable = false
+
+[node name="AttackHitBoxLeft" type="CollisionShape2D" parent="Attack" unique_id=1107105717]
+position = Vector2(-9, -14)
+shape = SubResource("RectangleShape2D_attack_left")
+disabled = true
+
+[node name="AttackHitBoxRight" type="CollisionShape2D" parent="Attack" unique_id=92722222]
+position = Vector2(14, 0)
+shape = SubResource("RectangleShape2D_attack_right")
+disabled = true
+
+[node name="AttackHitBoxAbove" type="CollisionShape2D" parent="Attack" unique_id=1674639729]
+position = Vector2(0, -12)
+shape = SubResource("RectangleShape2D_attack_above")
+disabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1460649515]
+position = Vector2(18, -26)
+texture = ExtResource("4_goblin_attack")
+hframes = 8
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1083748761]
+libraries/ = SubResource("AnimationLibrary_goblin")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1360202170]
+active = false
+tree_root = SubResource("AnimationNodeStateMachine_goblin")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/attack_requested = false
+parameters/conditions/death_requested = false
+parameters/conditions/take_hit_requested = false
+parameters/Move/blend_position = 0.0
+
+[node name="EnemyStateMachine" type="Node" parent="." unique_id=1850615338 node_paths=PackedStringArray("enemy", "current_state", "animation_tree")]
+script = ExtResource("7_enemy_state_machine")
+enemy = NodePath("..")
+current_state = NodePath("Patrol")
+animation_tree = NodePath("../AnimationTree")
+
+[node name="Patrol" type="Node" parent="EnemyStateMachine" unique_id=1833743064]
+script = ExtResource("8_enemy_patrol_state")
+
+[node name="Combat" type="Node" parent="EnemyStateMachine" unique_id=434683731]
+script = ExtResource("9_enemy_combat_state")
+
+[node name="Death" type="Node" parent="EnemyStateMachine" unique_id=135377081]
+script = ExtResource("10_enemy_death_state")
+
+[node name="StateDebugLabel" type="Label" parent="." unique_id=160781266 node_paths=PackedStringArray("state_machine")]
+visible = false
+offset_left = -39.0
+offset_top = -138.0
+offset_right = 6.0
+offset_bottom = -115.0
+text = "State:"
+script = ExtResource("11_k63hy")
+state_machine = NodePath("../EnemyStateMachine")
+

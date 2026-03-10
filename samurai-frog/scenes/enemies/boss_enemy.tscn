@@ -1,0 +1,20 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/boss_base.gd" id="1_boss_base"]
+[ext_resource type="Resource" path="res://resources/enemies/definitions/boss_enemy_definition.tres" id="2_enemy_def"]
+[ext_resource type="Resource" path="res://resources/enemies/movesets/boss_phase_1_moveset.tres" id="3_phase_1"]
+[ext_resource type="Resource" path="res://resources/enemies/movesets/boss_phase_2_moveset.tres" id="4_phase_2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(24, 24)
+
+[node name="BossEnemy" type="CharacterBody2D"]
+script = ExtResource("1_boss_base")
+definition = ExtResource("2_enemy_def")
+phase_move_sets = [ExtResource("3_phase_1"), ExtResource("4_phase_2")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_body")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -12)

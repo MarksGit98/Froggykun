@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://d140ln7qn6p8"]
+
+[ext_resource type="PackedScene" uid="uid://bpo48fknob1ka" path="res://scenes/player/player.tscn" id="1_q3f0m"]
+[ext_resource type="PackedScene" uid="uid://lq02etp67rci" path="res://scenes/levels/introLevel.tscn" id="1_sl2e5"]
+[ext_resource type="PackedScene" uid="uid://d0h1lnpnj5rjk" path="res://scenes/enemies/goblin_enemy.tscn" id="2_1fp7r"]
+
+[node name="World" type="Node2D" unique_id=1687332747]
+
+[node name="IntroLevel" parent="." unique_id=2029156386 instance=ExtResource("1_sl2e5")]
+position = Vector2(-45, -41)
+
+[node name="Player" parent="." unique_id=1670315292 instance=ExtResource("1_q3f0m")]
+position = Vector2(11, 75)
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1447381349]
+zoom = Vector2(1.2, 1.2)
+
+[node name="Enemies" type="Node" parent="." unique_id=1050437716]
+
+[node name="GoblinEnemy4" parent="Enemies" unique_id=628273889 instance=ExtResource("2_1fp7r")]
+position = Vector2(126, 105)
+
+[node name="GoblinEnemy" parent="Enemies" unique_id=468679784 instance=ExtResource("2_1fp7r")]
+position = Vector2(347, 44)
+
+[node name="GoblinEnemy2" parent="Enemies" unique_id=1221102349 instance=ExtResource("2_1fp7r")]
+position = Vector2(577, -5)
+
+[node name="GoblinEnemy3" parent="Enemies" unique_id=871779496 instance=ExtResource("2_1fp7r")]
+position = Vector2(494, -5)

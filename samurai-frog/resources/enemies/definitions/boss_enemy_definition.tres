@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/data/enemy_definition.gd" id="1_enemy_definition"]
+
+[resource]
+script = ExtResource("1_enemy_definition")
+display_name = "Boss"
+max_health = 140.0
+contact_damage = 2.0
+move_speed = 54.0
+acceleration = 360.0
+friction = 520.0
+gravity = 980.0
+attack_type = 5
+aggro_range = 1000.0
+attack_range = 60.0
+attack_cooldown_seconds = 1.2
+leash_range = 2000.0
+xp_drop = 100
